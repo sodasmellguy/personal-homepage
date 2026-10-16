@@ -1,0 +1,97 @@
+# ==================== 生产环境配置 ====================
+server:
+  port: 8080
+
+spring:
+  # 数据源配置
+  # 安全说明：密码不再提供默认值。
+  # 部署时必须通过环境变量注入：DB_HOST / DB_USERNAME / DB_PASSWORD 等。
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:personal-homepage}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD}
+    druid:
+      initial-size: 10
+      min-idle: 10
+      max-active: 50
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      stat-view-servlet:
+        enabled: false
+        url-pattern: /druid/*
+      filter:
+        stat:
+          enabled: true
+          slow-sql-millis: 2000
+          log-slow-sql: true
+        wall:
+          enabled: true
+
+  # Redis 配置（密码不再提供默认值，必须通过环境变量 REDIS_PASSWORD 注入）
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD}
+      database: 0
+      lettuce:
+        pool:
+          max-active: 16
+          max-idle: 8
+          min-idle: 2
+
+  # 邮件配置（授权码不再提供默认值，必须通过环境变量 MAIL_PASSWORD 注入）
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: ${MAIL_USERNAME:youxiangtuisongzhnaghao@qq.com}
+    password: ${MAIL_PASSWORD}
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+
+  # 静态资源映射
+  web:
+    resources:
+      static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:./uploads/
+
+# MyBatis Plus（生产环境关闭 SQL 日志）
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+
+# 生产环境 CORS：仅允许站点自身域名
+cors:
+  allowed-origins: https://www.ceshi.com
+
+# 生产环境关闭 API 文档（Knife4j/Swagger 不对外暴露）
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+knife4j:
+  production: true
+
+# 管理员邮箱
+app:
+  admin-email: ${MAIL_USERNAME:youxiangtuisongzhnaghao@qq.com}
+  site-url: ${SITE_URL:https://www.ceshi.com}
+
+# 日志配置（生产环境仅输出 warn 及以上）
+logging:
+  level:
+    com.example.grzy: warn
+    com.example.grzy.mapper: warn

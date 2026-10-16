@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.grzy.mapper.TbVisitorLocationMapper">
+
+    <!-- 按城市聚合访客数量（排除空值/未知），按数量倒序 -->
+    <select id="selectCityStats" resultType="java.util.Map">
+        SELECT city, COUNT(*) AS cnt
+        FROM tb_visitor_location
+        WHERE city IS NOT NULL
+          AND city != ''
+          AND city != '0'
+        GROUP BY city
+        ORDER BY cnt DESC
+    </select>
+
+    <!-- 按国家聚合访客数量（排除空值/未知），按数量倒序 -->
+    <select id="selectCountryStats" resultType="java.util.Map">
+        SELECT country, COUNT(*) AS cnt
+        FROM tb_visitor_location
+        WHERE country IS NOT NULL
+          AND country != ''
+          AND country != '0'
+        GROUP BY country
+        ORDER BY cnt DESC
+    </select>
+
+</mapper>

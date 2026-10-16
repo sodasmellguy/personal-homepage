@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.grzy.mapper.TbArticleMapper">
+
+    <!-- 按分类聚合正常文章数量（空分类归入「未分类」） -->
+    <select id="selectCategoryStats" resultType="java.util.Map">
+        SELECT CASE WHEN category IS NULL OR category = '' THEN '未分类' ELSE category END AS `name`,
+               COUNT(*) AS `value`
+        FROM tb_article
+        WHERE deleted = 0
+          AND status = 1
+        GROUP BY `name`
+    </select>
+
+</mapper>

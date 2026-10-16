@@ -1,0 +1,85 @@
+# ==================== 开发环境配置 ====================
+server:
+  port: 8080
+
+spring:
+  # 数据源配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/personal-homepage?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:123456}
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        login-username: ${DRUID_USERNAME:admin}
+        login-password: ${DRUID_PASSWORD:123456}
+      filter:
+        stat:
+          enabled: true
+          slow-sql-millis: 1000
+          log-slow-sql: true
+        wall:
+          enabled: true
+
+  # Redis 配置
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+
+  # 邮件配置
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: ${MAIL_USERNAME:youxiangtuisongzhnaghao@qq.com}
+    # 授权码不落库，通过环境变量 MAIL_PASSWORD 注入（旧授权码已进 git 历史，需在QQ邮箱后台吊销）
+    password: ${MAIL_PASSWORD:}
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+
+  # 静态资源映射
+  web:
+    resources:
+      static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:./uploads/
+
+# MyBatis Plus（开发环境显示 SQL）
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# 管理员邮箱
+app:
+  admin-email: youxiangtuisongzhnaghao@qq.com
+  site-url: http://localhost:8080
+
+# 日志配置（开发环境 debug 级别）
+logging:
+  level:
+    com.example.grzy: debug
+    com.example.grzy.mapper: debug

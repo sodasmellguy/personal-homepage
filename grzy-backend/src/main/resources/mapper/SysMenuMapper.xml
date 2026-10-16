@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.grzy.mapper.SysMenuMapper">
+
+    <!-- 查询所有启用的菜单（按排序） -->
+    <select id="selectEnabledMenus" resultType="com.example.grzy.entity.SysMenu">
+        SELECT id, parent_id, name, path, component, icon, sort, type, permission, status, create_time, update_time
+        FROM sys_menu
+        WHERE status = 1
+          AND deleted = 0
+        ORDER BY sort, id
+    </select>
+
+</mapper>

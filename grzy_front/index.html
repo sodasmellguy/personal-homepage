@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赵先生 - 个人主页</title>
+    <meta name="description" content="赵先生的个人主页 - 全栈开发工程师，展示项目经验、技术博客和实习经历">
+    <meta name="keywords" content="赵先生,个人主页,Vue,Java,全栈开发,技术博客,项目展示,实习经历">
+    <meta name="author" content="赵先生">
+    <meta property="og:title" content="赵先生 - 个人主页">
+    <meta property="og:description" content="全栈开发工程师的个人网站，展示项目经验、技术博客和实习经历">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/favicon.svg">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="赵先生 - 个人主页">
+    <meta name="twitter:description" content="全栈开发工程师的个人网站">
+    <!-- 安全响应头（meta 形式；建议同时在 Nginx 配置完整响应头，见 SECURITY_AUDIT.md VULN-07） -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self'; media-src 'self'; object-src 'none'; frame-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <link rel="alternate" type="application/rss+xml" title="赵先生博客 RSS" href="/rss.xml">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "赵先生",
+      "jobTitle": "全栈开发工程师",
+      "description": "展示项目经验、技术博客和实习经历的个人网站"
+    }
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <!-- ResizeObserver 警告抑制器（外部脚本，兼容 CSP 禁止内联脚本） -->
+    <script src="/suppress-resize-observer.js"></script>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

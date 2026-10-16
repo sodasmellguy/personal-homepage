@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.grzy.mapper.SysUserMapper">
+
+    <!-- 根据用户ID查询角色编码列表 -->
+    <select id="selectRoleCodesByUserId" resultType="java.lang.String">
+        SELECT r.role_code
+        FROM sys_role r
+        INNER JOIN sys_user_role ur ON r.id = ur.role_id
+        WHERE ur.user_id = #{userId}
+          AND r.status = 1
+          AND r.deleted = 0
+    </select>
+
+    <!-- 根据用户ID查询权限标识列表 -->
+    <select id="selectPermissionsByUserId" resultType="java.lang.String">
+        SELECT DISTINCT m.permission
+        FROM sys_menu m
+        INNER JOIN sys_role_menu rm ON m.id = rm.menu_id
+        INNER JOIN sys_user_role ur ON rm.role_id = ur.role_id
+        WHERE ur.user_id = #{userId}
+          AND m.permission IS NOT NULL
+          AND m.permission != ''
+          AND m.status = 1
+          AND m.deleted = 0
+    </select>
+
+    <!-- 根据用户ID查询已分配的角色ID列表 -->
+    <select id="selectRoleIdsByUserId" resultType="java.lang.Long">
+        SELECT ur.role_id
+        FROM sys_user_role ur
+        INNER JOIN sys_role r ON ur.role_id = r.id
+        WHERE ur.user_id = #{userId}
+          AND r.deleted = 0
+    </select>
+
+    <!-- 批量查询用户的角色关联 -->
+    <select id="selectUserRolesByUserIds" resultType="com.example.grzy.vo.UserRoleVO">
+        SELECT ur.user_id   AS userId,
+               ur.role_id   AS roleId,
+               r.role_name  AS roleName
+        FROM sys_user_role ur
+        INNER JOIN sys_role r ON ur.role_id = r.id
+        WHERE ur.user_id IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+          AND r.deleted = 0
+        ORDER BY ur.user_id, r.id
+    </select>
+
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.grzy.mapper.TbLikeMapper">
+
+    <!-- 按天聚合点赞数量（可指定文章） -->
+    <select id="selectCountGroupByDay" resultType="java.util.Map">
+        SELECT DATE_FORMAT(create_time, '%Y-%m-%d') AS statDate, COUNT(*) AS cnt
+        FROM tb_like
+        WHERE create_time &gt;= #{startTime}
+          AND create_time &lt; #{endTime}
+        <if test="articleId != null">
+            AND article_id = #{articleId}
+        </if>
+        GROUP BY statDate
+    </select>
+
+    <!-- 指定时间起按文章聚合点赞数量（月度热门用） -->
+    <select id="selectCountGroupByArticle" resultType="java.util.Map">
+        SELECT article_id AS articleId, COUNT(*) AS cnt
+        FROM tb_like
+        WHERE create_time &gt;= #{startTime}
+        GROUP BY article_id
+    </select>
+
+</mapper>

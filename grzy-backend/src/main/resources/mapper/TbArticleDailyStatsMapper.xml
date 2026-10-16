@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.grzy.mapper.TbArticleDailyStatsMapper">
+
+    <!-- 按日期范围聚合每日新增阅读量（可指定文章） -->
+    <select id="selectViewTrend" resultType="java.util.Map">
+        SELECT stat_date AS statDate, SUM(view_count) AS viewCount
+        FROM tb_article_daily_stats
+        WHERE deleted = 0
+          AND stat_date BETWEEN #{startDate} AND #{endDate}
+        <if test="articleId != null">
+            AND article_id = #{articleId}
+        </if>
+        GROUP BY stat_date
+    </select>
+
+    <!-- 查询指定日期之前每个文章最近一次快照的累计阅读量（用于差分计算当日新增） -->
+    <select id="selectLatestSnapshotBefore" resultType="java.util.Map">
+        SELECT s.article_id AS articleId, s.total_count AS totalCount
+        FROM tb_article_daily_stats s
+        INNER JOIN (
+            SELECT article_id, MAX(stat_date) AS maxDate
+            FROM tb_article_daily_stats
+            WHERE deleted = 0 AND stat_date &lt; #{date}
+            GROUP BY article_id
+        ) t ON s.article_id = t.article_id AND s.stat_date = t.maxDate
+        WHERE s.deleted = 0
+    </select>
+
+</mapper>
